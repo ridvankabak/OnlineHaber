@@ -1,0 +1,28 @@
+<resources>
+    <string name="app_name">NewsApi</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    
+    <!-- fragment_search -->
+    <string name="title">Search Fragment</string>
+    <string name="search">Ara</string>
+    <string name="lng_lng">TR/TR</string>
+    <string name="search_content">İçerikte Ara</string>
+    <string name="search_titles">Başlıklarda Ara</string>
+    <string name="date_range">Tarih Aralığı</string>
+    <string name="dot">…</string>
+    <string name="language">Dil</string>
+    <string name="sort">Sırala</string>
+    <string name="result">Sonucları Getir</string>
+
+    <!-- fragment_home -->
+    <string name="title_home">Home Fragment</string>
+    <string name="searching">Arama</string>
+    <string name="filter">Filtre</string>
+    <string name="choose_country">Ülke Seç</string>
+    <string name="choose_language">Dil Seç</string>
+    <string name="detail_fragment">Detail Fragment</string>
+    <string name="comeback">Dön</string>
+
+</resources>

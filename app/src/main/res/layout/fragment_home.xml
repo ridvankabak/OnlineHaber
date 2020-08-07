@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".HomeFragment">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appbarhome"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true"
+        android:background="@android:color/white"
+        >
+
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:id="@+id/collapsingToolbarLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_scrollFlags="scroll|enterAlways"
+            >
+
+            <TextView
+                android:id="@+id/textViewHomeRootName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/alegreya_sans_bold"
+                android:letterSpacing="0.03"
+                android:text="@string/title_home"
+                android:textAlignment="center"
+                android:textColor="#3a84db"
+                android:textSize="22sp"
+                android:textStyle="bold" />
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar_home"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="?attr/actionBarSize"
+                android:theme="?attr/actionBarTheme"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_scrollFlags="scroll|enterAlways"
+                android:layout_marginTop="30dp"
+                >
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="17dp"
+                    >
+
+                    <LinearLayout
+                        android:id="@+id/linearLayoutChoose"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="6"
+                        android:baselineAligned="false">
+
+                        <RelativeLayout
+                            android:id="@+id/relativeLayoutSearch"
+                            android:layout_width="wrap_content"
+                            android:layout_height="35dp"
+                            android:layout_marginEnd="3dp"
+                            android:layout_weight="3"
+                            android:background="@drawable/rectangle">
+
+                            <ImageView
+                                android:id="@+id/imageViewSearch"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:paddingStart="14dp"
+                                android:src="@drawable/ic_search"
+                                tools:ignore="ContentDescription,RtlSymmetry"
+                                />
+
+                            <TextView
+                                android:id="@+id/textViewSearch"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:layout_toEndOf="@id/imageViewSearch"
+                                android:fontFamily="@font/alegreya_sans_medium"
+                                android:paddingStart="7dp"
+                                android:text="@string/searching"
+                                android:textColor="@color/acikgri"
+                                tools:ignore="RtlSymmetry" />
+
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:id="@+id/relativeLayoutFilter"
+                            android:layout_width="wrap_content"
+                            android:layout_height="35dp"
+                            android:layout_marginStart="3dp"
+                            android:layout_marginEnd="20dp"
+                            android:layout_weight="3"
+                            android:background="@drawable/rectangle"
+                            android:paddingEnd="20dp"
+                            tools:ignore="RtlSymmetry">
+
+                            <ImageView
+                                android:id="@+id/imageViewFilter"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:paddingStart="14dp"
+                                android:src="@drawable/ic_filter"
+                                tools:ignore="ContentDescription" />
+
+                            <TextView
+                                android:id="@+id/textViewFilter"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:layout_toEndOf="@id/imageViewFilter"
+                                android:fontFamily="@font/alegreya_sans_medium"
+                                android:paddingStart="7dp"
+                                android:text="@string/filter"
+                                android:textColor="@color/acikgri" />
+
+                        </RelativeLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/linearLayoutFiltre"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/linearLayoutChoose"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <RelativeLayout
+                            android:id="@+id/relativeLayoutFilterAll"
+                            android:layout_width="match_parent"
+                            android:layout_height="35dp"
+                            android:layout_marginStart="3dp"
+                            android:layout_marginEnd="20dp"
+                            android:background="@drawable/rectangle">
+
+                            <ImageView
+                                android:id="@+id/imageViewFilterAll"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:paddingStart="14dp"
+                                android:src="@drawable/ic_filter"
+                                tools:ignore="ContentDescription,RtlSymmetry" />
+
+                            <TextView
+                                android:id="@+id/textViewFilterAll"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:layout_toEndOf="@id/imageViewFilterAll"
+                                android:fontFamily="@font/alegreya_sans_medium"
+                                android:paddingStart="7dp"
+                                android:text="@string/filter"
+                                android:textColor="@color/acikgri"
+                                tools:ignore="RtlSymmetry" />
+
+                        </RelativeLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="20dp"
+                            android:orientation="horizontal"
+                            android:weightSum="10"
+                            android:baselineAligned="false">
+
+                            <RelativeLayout
+                                android:id="@+id/relativeLayoutCountry"
+                                android:layout_width="wrap_content"
+                                android:layout_height="35dp"
+                                android:layout_marginTop="9dp"
+                                android:layout_marginEnd="3dp"
+                                android:layout_weight="5"
+                                android:background="@drawable/rectangle">
+
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_centerVertical="true"
+                                    android:layout_marginEnd="15dp"
+                                    android:paddingStart="14dp"
+                                    android:src="@drawable/ic_down_arrow"
+                                    tools:ignore="ContentDescription,RtlSymmetry" />
+
+
+                                <TextView
+                                    android:id="@+id/textViewCountryName"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerVertical="true"
+                                    android:layout_marginStart="14dp"
+                                    android:fontFamily="@font/alegreya_sans_medium"
+                                    android:text="@string/choose_country"
+                                    android:textColor="@color/acikgri"
+                                    tools:ignore="RelativeOverlap" />
+
+                            </RelativeLayout>
+
+                            <RelativeLayout
+                                android:id="@+id/relativeLayoutLanguage"
+                                android:layout_width="wrap_content"
+                                android:layout_height="35dp"
+                                android:layout_marginStart="3dp"
+                                android:layout_marginTop="9dp"
+                                android:layout_weight="5"
+                                android:background="@drawable/rectangle">
+
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentEnd="true"
+                                    android:layout_centerVertical="true"
+                                    android:layout_marginEnd="15dp"
+                                    android:paddingStart="14dp"
+                                    android:src="@drawable/ic_down_arrow"
+                                    tools:ignore="ContentDescription,RtlSymmetry" />
+
+                                <TextView
+                                    android:id="@+id/textViewLanguage"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerVertical="true"
+                                    android:layout_marginStart="14dp"
+                                    android:fontFamily="@font/alegreya_sans_medium"
+                                    android:text="@string/choose_language"
+                                    android:textColor="@color/acikgri"
+                                    tools:ignore="RelativeOverlap" />
+
+                            </RelativeLayout>
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+            </androidx.appcompat.widget.Toolbar>
+
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/appbarhome"
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerview_home"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar_home"
+            tools:listitem="@layout/card_view" />
+
+    </androidx.core.widget.NestedScrollView>
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
