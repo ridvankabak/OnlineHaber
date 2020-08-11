@@ -1,184 +1,199 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    app:layout_constraintCircleRadius="15dp">
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/news_card"
+    <data>
+        <variable
+            name="news"
+            type="com.ridvankabak.newsapi.model.Article" />
+        <variable
+            name="listener"
+            type="com.ridvankabak.newsapi.adapter.NewsClickListener" />
+    </data>
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_marginBottom="1dp"
         android:layout_height="wrap_content"
-
+        android:orientation="vertical"
+        app:layout_constraintCircleRadius="15dp"
         >
-        <RelativeLayout
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/news_card"
             android:layout_width="match_parent"
+            android:layout_marginBottom="1dp"
             android:layout_height="wrap_content"
-            android:paddingTop="5dp"
-            android:paddingBottom="5dp"
-            android:paddingRight="5dp"
-            android:paddingLeft="5dp"
             >
-
             <RelativeLayout
-                android:id="@+id/relativeLayoutImg"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:paddingRight="5dp"
+                android:paddingLeft="5dp"
+                android:onClick="@{listener::onClickListener}"
+                >
 
-                <ImageView
-                    android:id="@+id/imageViewIcon"
-                    android:layout_width="match_parent"
-                    android:layout_height="180dp"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginEnd="16dp"
-                    android:layout_marginBottom="16dp"
-                    android:background="@drawable/image_shape"
-                    android:scaleType="centerCrop"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/ic_android_black_24dp" />
+                <TextView
+                    android:id="@+id/uuid_card"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{String.valueOf(news.uuid)}"
+                    android:visibility="gone"/>
 
-                <View
-                    android:id="@+id/image_title_coverr"
+                <RelativeLayout
+                    android:id="@+id/relativeLayoutImage"
                     android:layout_width="match_parent"
-                    android:layout_height="64dp"
-                    android:layout_alignStart="@+id/imageViewIcon"
-                    android:layout_alignEnd="@+id/imageViewIcon"
-                    android:layout_alignBottom="@+id/imageViewIcon"
-                    android:layout_marginStart="0dp"
-                    android:layout_marginEnd="0dp"
-                    android:layout_marginBottom="0dp"
-                    android:background="@drawable/title_cover"
-                    />
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/imageViewNews"
+                        android:layout_width="match_parent"
+                        android:layout_height="180dp"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:layout_marginBottom="16dp"
+                        android:background="@drawable/image_shape"
+                        android:scaleType="centerCrop"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:downloadImage="@{news.urlToImage}"
+                        />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="64dp"
+                        android:layout_alignStart="@+id/imageViewNews"
+                        android:layout_alignEnd="@+id/imageViewNews"
+                        android:layout_alignBottom="@+id/imageViewNews"
+                        android:layout_marginStart="0dp"
+                        android:layout_marginEnd="0dp"
+                        android:layout_marginBottom="0dp"
+                        android:background="@drawable/title_cover"
+                        />
+
+                </RelativeLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/constraintLayoutText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/relativeLayoutImage">
+
+                    <TextView
+                        android:id="@+id/textViewTitle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginEnd="20dp"
+                        android:fontFamily="@font/alegreya_sans_medium"
+                        android:text="@{news.title}"
+                        android:textColor="@color/Maviii"
+                        android:textSize="17sp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/textViewDesc"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/textViewTitle"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="17dp"
+                        android:layout_marginEnd="20dp"
+                        android:fontFamily="@font/alegreya_sans_medium"
+                        android:text="@{news.content}"
+                        android:textColor="@color/koyugri"
+                        android:textSize="13sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/textViewTitle" />
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/constraintLayoutText"
+                    android:orientation="horizontal"
+                    android:weightSum="10"
+                    >
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="5"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="10dp">
+
+                        <ImageView
+                            android:id="@+id/imageViewAuthor"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="20dp"
+                            android:src="@drawable/ic_author"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/textViewAuthor"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="11dp"
+                            android:text="@{news.author}"
+                            android:textColor="@color/acikgri"
+                            android:textSize="13sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="5"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal"
+                        android:layout_marginBottom="10dp">
+
+                        <ImageView
+                            android:id="@+id/imageViewCalendar"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="20dp"
+                            android:src="@drawable/ic_calendar"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/textViewCalendar"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="11dp"
+                            android:text="@{news.publishedAt}"
+                            android:textColor="@color/acikgri"
+                            android:textSize="13sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent" />
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
 
             </RelativeLayout>
 
+        </androidx.cardview.widget.CardView>
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/constraintLayoutText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/relativeLayoutImg">
+    </LinearLayout>
 
-                <TextView
-                    android:id="@+id/textViewTitle"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginEnd="20dp"
-                    android:fontFamily="@font/alegreya_sans_medium"
-                    android:text="Lorem Ipsum Dolor Dit Amet, Consectetur Adipiscing Elit"
-                    android:textColor="@color/Maviii"
-                    android:textSize="17sp"
-                    android:textStyle="bold"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/textViewDesc"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/textViewTitle"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="17dp"
-                    android:layout_marginEnd="20dp"
-                    android:fontFamily="@font/alegreya_sans_medium"
-                    android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu r"
-                    android:textColor="@color/koyugri"
-                    android:textSize="13sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textViewTitle" />
-
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/constraintLayoutText"
-                android:orientation="horizontal"
-                android:weightSum="10"
-                >
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="5"
-                    android:layout_alignParentLeft="true"
-                    android:layout_marginTop="10dp"
-                    android:orientation="horizontal"
-                    android:layout_marginBottom="10dp">
-
-                    <ImageView
-                        android:id="@+id/imageViewAuthor"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
-                        android:src="@drawable/ic_author"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/textViewAuthor"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="11dp"
-                        android:text="Ayşe Kaya"
-                        android:textColor="@color/acikgri"
-                        android:textSize="13sp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent" />
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="5"
-                    android:layout_alignParentLeft="true"
-                    android:layout_marginTop="10dp"
-                    android:orientation="horizontal"
-                    android:layout_marginBottom="10dp">
-
-                    <ImageView
-                        android:id="@+id/imageViewCalendar"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
-                        android:src="@drawable/ic_calendar"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/textViewCalendar"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="11dp"
-                        android:text="07.08.2020"
-                        android:textColor="@color/acikgri"
-                        android:textSize="13sp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent" />
-
-                </LinearLayout>
-
-
-            </LinearLayout>
-
-
-
-        </RelativeLayout>
-
-    </androidx.cardview.widget.CardView>
-
-</LinearLayout>
+</layout>

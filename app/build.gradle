@@ -80,5 +80,10 @@ dependencies {
     //Retrofit Log Output
     implementation 'com.squareup.okhttp3:logging-interceptor:4.2.1'
 
+    implementation 'net.bohush.geometricprogressview:geometricprogressview:1.1.1'
+
+    //Retrofit Log Output
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.2.1'
+
 
 }

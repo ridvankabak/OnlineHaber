@@ -1,4 +1,4 @@
-package com.ridvankabak.newsapi
+package com.ridvankabak.newsapi.view
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.Navigation
+import com.ridvankabak.newsapi.R
 import kotlinx.android.synthetic.main.fragment_search.*
 
 class SearchFragment : Fragment() {
@@ -22,7 +23,8 @@ class SearchFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         buttonSearch?.setOnClickListener{view ->
-            val action = SearchFragmentDirections.actionSearchFragmentToHomeFragment()
+            val action =
+                SearchFragmentDirections.actionSearchFragmentToHomeFragment()
             Navigation.findNavController(view).navigate(action)
         }
     }

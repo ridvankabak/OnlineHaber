@@ -1,7 +1,8 @@
-package com.ridvankabak.newsapi
+package com.ridvankabak.newsapi.view
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.ridvankabak.newsapi.R
 
 class MainActivity : AppCompatActivity() {
 
