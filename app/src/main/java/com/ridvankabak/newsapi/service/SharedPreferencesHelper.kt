@@ -5,15 +5,15 @@ import android.content.SharedPreferences
 import androidx.core.content.edit
 import androidx.preference.PreferenceManager
 
-class PrivateSharedPreferences {
+class SharedPreferencesHelper {
 
     companion object{
         private val TIME = "time"
         private var sharedPreferences:SharedPreferences? = null
 
-        @Volatile private var instance : PrivateSharedPreferences? = null
+        @Volatile private var instance : SharedPreferencesHelper? = null
         private val lock = Any()
-        operator fun invoke(context: Context): PrivateSharedPreferences = instance
+        operator fun invoke(context: Context): SharedPreferencesHelper = instance
             ?: synchronized(lock){
             instance
                 ?: makePrivateSharedPreferences(
@@ -23,9 +23,9 @@ class PrivateSharedPreferences {
             }
         }
 
-        private fun makePrivateSharedPreferences(context: Context): PrivateSharedPreferences {
+        private fun makePrivateSharedPreferences(context: Context): SharedPreferencesHelper {
             sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
-            return PrivateSharedPreferences()
+            return SharedPreferencesHelper()
         }
     }
 
@@ -37,4 +37,6 @@ class PrivateSharedPreferences {
 
     fun getTime() = sharedPreferences?.getLong(
         TIME,0)
+
+
 }

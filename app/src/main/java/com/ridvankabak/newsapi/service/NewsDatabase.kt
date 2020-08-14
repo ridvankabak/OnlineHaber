@@ -5,10 +5,10 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.ridvankabak.newsapi.model.Article
-import com.ridvankabak.newsapi.model.NewsResponse
 
-@Database(entities = arrayOf(Article::class),version = 1)
-abstract class NewsDatabase() : RoomDatabase() {
+@Database(entities = [Article::class],version = 1)
+
+abstract class NewsDatabase : RoomDatabase() {
 
     abstract fun newsDao() : NewsDAO
 

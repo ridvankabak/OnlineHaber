@@ -5,23 +5,26 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.ridvankabak.newsapi.R
+import com.ridvankabak.newsapi.databinding.FragmentDetailBinding
 import com.ridvankabak.newsapi.viewmodel.DetailViewModel
 import kotlinx.android.synthetic.main.fragment_detail.*
 
 
 class DetailFragment : Fragment() {
     private lateinit var viewModel:DetailViewModel
+    private lateinit var dataBinding: FragmentDetailBinding
 
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
-        return inflater.inflate(R.layout.fragment_detail, container, false)
+        dataBinding = DataBindingUtil.inflate(inflater,R.layout.fragment_detail,container,false)
+        return dataBinding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -39,7 +42,8 @@ class DetailFragment : Fragment() {
         viewModel.newsLiveData.observe(viewLifecycleOwner, Observer { data ->
 
             data?.let {
-                webView.loadUrl(data.url)
+                dataBinding.news = data
+                //webView.loadUrl(data.url)
             }
         })
     }

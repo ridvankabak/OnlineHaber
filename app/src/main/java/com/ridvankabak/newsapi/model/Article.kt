@@ -7,6 +7,7 @@ import com.google.gson.annotations.SerializedName
 
 @Entity
 data class Article(
+
     @ColumnInfo(name = "author")
     @SerializedName("author")
     val author: String?,
@@ -34,6 +35,7 @@ data class Article(
     @ColumnInfo(name = "content")
     @SerializedName("content")
     val content: String?
+
 ) {
         @PrimaryKey(autoGenerate = true)
         var uuid: Int = 0

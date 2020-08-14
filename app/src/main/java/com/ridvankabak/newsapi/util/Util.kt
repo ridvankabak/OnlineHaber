@@ -28,3 +28,7 @@ fun makePlaceHolder(context:Context):CircularProgressDrawable{
 fun downloadImg(view:ImageView,url:String?){
     view.downloadImage(url, makePlaceHolder(view.context))
 }
+@BindingAdapter("android:loadUrl")
+fun loadUrl(webView:AdvancedWebView,url:String?){
+    webView.loadUrl(url)
+}
