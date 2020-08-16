@@ -24,7 +24,6 @@ import com.ridvankabak.newsapi.viewmodel.MainViewModel
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.fragment_home.view.*
 
-
 class HomeFragment : Fragment(), CountryBottomSheetDialog.BSheetCountryListener,
     LanguageBottomSheetDialog.BSheetLanguageListener {
 
