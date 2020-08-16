@@ -1,7 +1,6 @@
 package com.ridvankabak.newsapi.viewmodel
 
 import android.app.Application
-import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import com.ridvankabak.newsapi.model.Article
@@ -21,7 +20,7 @@ class HomeViewModel(application: Application) : BaseViewModel(application) {
     val news = MutableLiveData<List<Article>>()
     val newsErrorMessage = MutableLiveData<Boolean>()
     val newsLoading = MutableLiveData<Boolean>()
-    private var uptadeTime = 5 * 60 * 1000 * 1000 * 1000L
+    private var uptadeTime = 0.2 * 60 * 1000 * 1000 * 1000L
 
     private val newsApiService = NewsApiService()
     private val disposable = CompositeDisposable()
@@ -31,6 +30,7 @@ class HomeViewModel(application: Application) : BaseViewModel(application) {
     fun refreshData() {
         val recordedTime = sharedPreferencesHelper.getTime()
 
+
         if (recordedTime != null && recordedTime != 0L && System.nanoTime() - recordedTime < uptadeTime) {
             //Sqlitetan al
             getDataFromSQLite()
@@ -38,6 +38,7 @@ class HomeViewModel(application: Application) : BaseViewModel(application) {
         } else {
             getDataFromInternet()
         }
+
 
     }
 
@@ -88,7 +89,6 @@ class HomeViewModel(application: Application) : BaseViewModel(application) {
         news.value = newsList
         newsLoading.value = false
         newsErrorMessage.value = false
-
     }
 
     private fun saveSqlite(newsList: List<Article>) {
@@ -110,31 +110,31 @@ class HomeViewModel(application: Application) : BaseViewModel(application) {
     }
 
     fun searchData(search: Search?) {
-        /*Log.e("Searchtitle",search?.title)
-        Log.e("Searchcontent",search?.content)
-        Log.e("Searchto",search?.to)
-        Log.e("Searchfrom",search?.from)
-        Log.e("Searchlanguage",search?.language)
-        Log.e("SearchtoSort",search?.toSort)*/
 
-        //disposable
         getSearchDataFromInternet(search)
     }
 
-    fun getSearchDataFromInternet(search: Search?){
+    fun getSearchDataFromInternet(search: Search?) {
         newsLoading.value = true
 
         disposable.add(
-            newsApiService.getSearchData(search!!.title!!,search!!.content!!,search!!.to!!,search!!.from!!,search!!.language!!,search!!.toSort!!)
+            newsApiService.getSearchData(
+                search!!.title!!,
+                search!!.content!!,
+                search!!.to!!,
+                search!!.from!!,
+                search!!.language!!,
+                search!!.toSort!!
+            )
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(object : DisposableSingleObserver<NewsResponse>(){
+                .subscribeWith(object : DisposableSingleObserver<NewsResponse>() {
                     override fun onSuccess(t: NewsResponse) {
                         //Başarılı
                         saveSqlite(t.articles)
                         Toast.makeText(
                             getApplication(),
-                            "Haberleri Internetten aldık",
+                            "Haberleri Internetten aldık search",
                             Toast.LENGTH_LONG
                         ).show()
                     }
@@ -151,7 +151,7 @@ class HomeViewModel(application: Application) : BaseViewModel(application) {
         )
     }
 
-    fun getBottomCountry(country:String){
+    fun getBottomCountry(country: String) {
         newsLoading.value = true
 
         disposable.add(
@@ -161,10 +161,10 @@ class HomeViewModel(application: Application) : BaseViewModel(application) {
                 .subscribeWith(object : DisposableSingleObserver<NewsResponse>() {
                     override fun onSuccess(t: NewsResponse) {
                         //Başarılı olursa
-                        if(t.totalResults == 0){
+                        if (t.totalResults == 0) {
                             newsLoading.value = false
                             newsErrorMessage.value = true
-                        }else{
+                        } else {
                             newsShow(t.articles)
                         }
                     }
@@ -179,7 +179,7 @@ class HomeViewModel(application: Application) : BaseViewModel(application) {
         )
     }
 
-    fun getBottomLanguage(language:String){
+    fun getBottomLanguage(language: String) {
         newsLoading.value = true
 
         disposable.add(
@@ -189,10 +189,10 @@ class HomeViewModel(application: Application) : BaseViewModel(application) {
                 .subscribeWith(object : DisposableSingleObserver<NewsResponse>() {
                     override fun onSuccess(t: NewsResponse) {
                         //Başarılı olursa
-                        if(t.totalResults == 0){
+                        if (t.totalResults == 0) {
                             newsLoading.value = false
                             newsErrorMessage.value = true
-                        }else{
+                        } else {
                             newsShow(t.articles)
                         }
                     }

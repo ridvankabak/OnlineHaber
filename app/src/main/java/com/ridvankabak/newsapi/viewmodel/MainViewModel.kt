@@ -18,12 +18,6 @@ class MainViewModel(application: Application) : BaseViewModel(application) {
     fun updateSearchValue(search: Search) {
 
         _searchLiveData.value = search
-    }
 
-    fun deleteAll(){
-        launch {
-            val dao = NewsDatabase(getApplication()).newsDao()
-            dao.deleteAllNews()
-        }
     }
 }
