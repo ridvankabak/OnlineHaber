@@ -8,6 +8,7 @@ import com.ridvankabak.newsapi.model.NewsResponse
 import com.ridvankabak.newsapi.model.Search
 import com.ridvankabak.newsapi.service.NewsApiService
 import com.ridvankabak.newsapi.service.NewsDatabase
+import com.ridvankabak.newsapi.service.ResultService
 import com.ridvankabak.newsapi.service.SharedPreferencesHelper
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -16,20 +17,15 @@ import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.launch
 
 class HomeViewModel(application: Application) : BaseViewModel(application) {
-
-    val news = MutableLiveData<List<Article>>()
-    val newsErrorMessage = MutableLiveData<Boolean>()
-    val newsLoading = MutableLiveData<Boolean>()
+    val result = MutableLiveData<ResultService>()
     private var uptadeTime = 0.2 * 60 * 1000 * 1000 * 1000L
 
     private val newsApiService = NewsApiService()
     private val disposable = CompositeDisposable()
-    private val sharedPreferencesHelper =
-        SharedPreferencesHelper(getApplication())
+    private val sharedPreferencesHelper = SharedPreferencesHelper(getApplication())
 
     fun refreshData() {
         val recordedTime = sharedPreferencesHelper.getTime()
-
 
         if (recordedTime != null && recordedTime != 0L && System.nanoTime() - recordedTime < uptadeTime) {
             //Sqlitetan al
@@ -38,12 +34,11 @@ class HomeViewModel(application: Application) : BaseViewModel(application) {
         } else {
             getDataFromInternet()
         }
-
-
     }
 
     private fun getDataFromSQLite() {
-        newsLoading.value = true
+        result.value = ResultService.GetNewsLoading(true)
+
         launch {
             val newsList = NewsDatabase(getApplication()).newsDao().getAllNews()
             newsShow(newsList)
@@ -52,8 +47,7 @@ class HomeViewModel(application: Application) : BaseViewModel(application) {
     }
 
     private fun getDataFromInternet() {
-
-        newsLoading.value = true
+        result.value = ResultService.GetNewsLoading(true)
 
         disposable.add(
             newsApiService.getData()
@@ -72,8 +66,8 @@ class HomeViewModel(application: Application) : BaseViewModel(application) {
 
                     override fun onError(e: Throwable) {
                         //Hata alırsak
-                        newsLoading.value = false
-                        newsErrorMessage.value = true
+                        result.value = ResultService.GetNewsLoading(false)
+                        result.value = ResultService.GetNewsFail(true)
                         e.printStackTrace()
                     }
                 })
@@ -85,10 +79,14 @@ class HomeViewModel(application: Application) : BaseViewModel(application) {
     }
 
     private fun newsShow(newsList: List<Article>) {
+        result.value = ResultService.GetNewsLoading(false)
+        try{
+            result.value = ResultService.GetNewsSuccess(newsList)
+        }catch(exception:Exception){
+            result.value = ResultService.GetNewsFail(true)
+        }
 
-        news.value = newsList
-        newsLoading.value = false
-        newsErrorMessage.value = false
+
     }
 
     private fun saveSqlite(newsList: List<Article>) {
@@ -109,22 +107,22 @@ class HomeViewModel(application: Application) : BaseViewModel(application) {
         sharedPreferencesHelper.saveTime(System.nanoTime())
     }
 
-    fun searchData(search: Search?) {
+    fun searchData(search: Search) {
 
         getSearchDataFromInternet(search)
     }
 
-    fun getSearchDataFromInternet(search: Search?) {
-        newsLoading.value = true
+    fun getSearchDataFromInternet(search: Search) {
+        result.value = ResultService.GetNewsLoading(true)
 
         disposable.add(
             newsApiService.getSearchData(
-                search!!.title!!,
-                search!!.content!!,
-                search!!.to!!,
-                search!!.from!!,
-                search!!.language!!,
-                search!!.toSort!!
+                search.title,
+                search.content,
+                search.to,
+                search.from,
+                search.language,
+                search.toSort
             )
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -141,8 +139,8 @@ class HomeViewModel(application: Application) : BaseViewModel(application) {
 
                     override fun onError(e: Throwable) {
                         //Hata
-                        newsLoading.value = false
-                        newsErrorMessage.value = true
+                        result.value = ResultService.GetNewsLoading(false)
+                        result.value = ResultService.GetNewsFail(true)
                         e.printStackTrace()
                     }
 
@@ -152,7 +150,7 @@ class HomeViewModel(application: Application) : BaseViewModel(application) {
     }
 
     fun getBottomCountry(country: String) {
-        newsLoading.value = true
+        result.value = ResultService.GetNewsLoading(true)
 
         disposable.add(
             newsApiService.getBottomDataCountry(country)
@@ -162,8 +160,8 @@ class HomeViewModel(application: Application) : BaseViewModel(application) {
                     override fun onSuccess(t: NewsResponse) {
                         //Başarılı olursa
                         if (t.totalResults == 0) {
-                            newsLoading.value = false
-                            newsErrorMessage.value = true
+                            result.value = ResultService.GetNewsLoading(false)
+                            result.value = ResultService.GetNewsFail(true)
                         } else {
                             newsShow(t.articles)
                         }
@@ -171,8 +169,8 @@ class HomeViewModel(application: Application) : BaseViewModel(application) {
 
                     override fun onError(e: Throwable) {
                         //Hata alırsak
-                        newsLoading.value = false
-                        newsErrorMessage.value = true
+                        result.value = ResultService.GetNewsLoading(false)
+                        result.value = ResultService.GetNewsFail(true)
                         e.printStackTrace()
                     }
                 })
@@ -180,7 +178,7 @@ class HomeViewModel(application: Application) : BaseViewModel(application) {
     }
 
     fun getBottomLanguage(language: String) {
-        newsLoading.value = true
+        result.value = ResultService.GetNewsLoading(true)
 
         disposable.add(
             newsApiService.getBottomDataLanguage(language)
@@ -190,8 +188,8 @@ class HomeViewModel(application: Application) : BaseViewModel(application) {
                     override fun onSuccess(t: NewsResponse) {
                         //Başarılı olursa
                         if (t.totalResults == 0) {
-                            newsLoading.value = false
-                            newsErrorMessage.value = true
+                            result.value = ResultService.GetNewsLoading(false)
+                            result.value = ResultService.GetNewsFail(true)
                         } else {
                             newsShow(t.articles)
                         }
@@ -199,12 +197,13 @@ class HomeViewModel(application: Application) : BaseViewModel(application) {
 
                     override fun onError(e: Throwable) {
                         //Hata alırsak
-                        newsLoading.value = false
-                        newsErrorMessage.value = true
+                        result.value = ResultService.GetNewsLoading(false)
+                        result.value = ResultService.GetNewsFail(true)
                         e.printStackTrace()
                     }
                 })
         )
     }
+
 
 }

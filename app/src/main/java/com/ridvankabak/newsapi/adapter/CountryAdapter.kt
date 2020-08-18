@@ -30,7 +30,7 @@ class CountryAdapter(val countryList: ArrayList<Country>) : BaseAdapter(){
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
 
-        var view:View? = null
+        var view:View?
 
         if(convertView == null){
             var layout = LayoutInflater.from(parent.context)
@@ -45,8 +45,8 @@ class CountryAdapter(val countryList: ArrayList<Country>) : BaseAdapter(){
 
         var country = getItem(position) as Country
 
-        viewHolder!!.textViewName.text = country.name
-        viewHolder!!.imageViewCountryFlag.setImageResource(country.flag)
+        viewHolder?.textViewName?.text = country.name
+        viewHolder?.imageViewCountryFlag?.setImageResource(country.flag)
         if (country.isSelected ) {
             viewHolder!!.imageViewCheck.setImageResource(R.drawable.ic_switch_on)
         } else {

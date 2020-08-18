@@ -147,7 +147,7 @@ class SearchFragment : Fragment(),LanguageAdapterSearch.FlagClickListener {
         }
     }
 
-    override fun onClickListener(title: String?, position: Int?) {
+    override fun onClickListener(title: String, position: Int?) {
         search.language = title
     }
 }

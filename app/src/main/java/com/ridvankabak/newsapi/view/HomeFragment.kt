@@ -6,30 +6,31 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
-import android.widget.Toolbar
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.Navigation
 import com.google.android.material.appbar.AppBarLayout
 import com.ridvankabak.newsapi.R
+import com.ridvankabak.newsapi.adapter.NewsClickListener
 import com.ridvankabak.newsapi.adapter.NewsRecyclerAdapter
 import com.ridvankabak.newsapi.common.CountryBottomSheetDialog
 import com.ridvankabak.newsapi.common.LanguageBottomSheetDialog
 import com.ridvankabak.newsapi.model.Country
 import com.ridvankabak.newsapi.model.Language
+import com.ridvankabak.newsapi.service.ResultService
 import com.ridvankabak.newsapi.viewmodel.HomeViewModel
 import com.ridvankabak.newsapi.viewmodel.MainViewModel
+import kotlinx.android.synthetic.main.card_view.view.*
 import kotlinx.android.synthetic.main.fragment_home.*
-import kotlinx.android.synthetic.main.fragment_home.view.*
+
 
 class HomeFragment : Fragment(), CountryBottomSheetDialog.BSheetCountryListener,
-    LanguageBottomSheetDialog.BSheetLanguageListener {
+    LanguageBottomSheetDialog.BSheetLanguageListener,NewsClickListener {
 
     private lateinit var viewModel: HomeViewModel
     private lateinit var mainViewModel: MainViewModel
-    private val recyclerNewsAdapter = NewsRecyclerAdapter(arrayListOf())
+    private val recyclerNewsAdapter = NewsRecyclerAdapter(this,arrayListOf())
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,7 +42,6 @@ class HomeFragment : Fragment(), CountryBottomSheetDialog.BSheetCountryListener,
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         viewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
         mainViewModel = ViewModelProvider(requireActivity())[MainViewModel::class.java]
 
@@ -49,8 +49,6 @@ class HomeFragment : Fragment(), CountryBottomSheetDialog.BSheetCountryListener,
         recyclerview_home.adapter = recyclerNewsAdapter
         setListener()
         observeLiveData()
-
-
     }
 
     fun setListener() {
@@ -101,7 +99,7 @@ class HomeFragment : Fragment(), CountryBottomSheetDialog.BSheetCountryListener,
     }
 
     fun observeLiveData() {
-        viewModel.news.observe(viewLifecycleOwner, Observer { news ->
+        /*viewModel.news.observe(viewLifecycleOwner, Observer { news ->
             news?.let {
                 recyclerview_home.visibility = View.VISIBLE
                 recyclerNewsAdapter.newsListUptade(it)
@@ -130,6 +128,35 @@ class HomeFragment : Fragment(), CountryBottomSheetDialog.BSheetCountryListener,
                     pb_loading.visibility = View.GONE
                 }
             }
+        })*/
+
+        viewModel.result.observe(viewLifecycleOwner, Observer { result ->
+
+            when (result) {
+
+                is ResultService.GetNewsSuccess -> {
+                    recyclerview_home.visibility = View.VISIBLE
+                    recyclerNewsAdapter.newsListUptade(result.newses)
+                }
+                is ResultService.GetNewsFail -> {
+                    if (result.e) {
+                        recyclerview_home.visibility = View.GONE
+                        linearlayoutNoNews.visibility = View.VISIBLE
+                    } else {
+                        linearlayoutNoNews.visibility = View.GONE
+                    }
+                }
+                is ResultService.GetNewsLoading -> {
+                    if (result.showLoading) {
+                        recyclerview_home.visibility = View.GONE
+                        linearlayoutNoNews.visibility = View.GONE
+                        pb_loading.visibility = View.VISIBLE
+                    } else {
+                        pb_loading.visibility = View.GONE
+                    }
+                }
+            }
+
         })
 
         mainViewModel.searchLiveData.observe(viewLifecycleOwner, Observer {
@@ -147,5 +174,13 @@ class HomeFragment : Fragment(), CountryBottomSheetDialog.BSheetCountryListener,
     override fun onClickedLanguage(languageText: String) {
         Log.e("language", languageText)
         viewModel.getBottomLanguage(languageText)
+    }
+
+    override fun onClickListener(view: View) {
+        val uuid = view.uuid_card.text.toString().toIntOrNull()
+        uuid?.let {
+            val action = HomeFragmentDirections.actionHomeFragmentToDetailFragment(it)
+            Navigation.findNavController(view).navigate(action)
+        }
     }
 }

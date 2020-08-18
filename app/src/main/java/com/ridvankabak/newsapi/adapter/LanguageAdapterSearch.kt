@@ -1,6 +1,5 @@
 package com.ridvankabak.newsapi.adapter
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -37,6 +36,9 @@ class LanguageAdapterSearch(var languageList:ArrayList<Language>,var callback:Se
         }
 
         holder.itemView.rvLanguage.setOnClickListener{
+            languageList.forEach {
+                it.isSelected = false
+            }
             languageList.get(selectedIndex).isSelected = false
             languageList.get(position).isSelected = true
             selectedItem = languageList.get(position)
@@ -68,6 +70,6 @@ class LanguageAdapterSearch(var languageList:ArrayList<Language>,var callback:Se
     }
 
     interface FlagClickListener{
-        fun onClickListener(title:String?,position:Int?)
+        fun onClickListener(title:String,position:Int?)
     }
 }

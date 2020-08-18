@@ -1,5 +1,6 @@
 package com.ridvankabak.newsapi.adapter
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,10 +13,11 @@ import com.ridvankabak.newsapi.databinding.CardViewBinding
 import com.ridvankabak.newsapi.model.Article
 import com.ridvankabak.newsapi.util.downloadImage
 import com.ridvankabak.newsapi.util.makePlaceHolder
+import com.ridvankabak.newsapi.view.HomeFragment
 import com.ridvankabak.newsapi.view.HomeFragmentDirections
 import kotlinx.android.synthetic.main.card_view.view.*
 
-class NewsRecyclerAdapter(val newsList:ArrayList<Article>): RecyclerView.Adapter<NewsRecyclerAdapter.NewsViewHolder>(),NewsClickListener {
+class NewsRecyclerAdapter(val context: HomeFragment, val newsList:ArrayList<Article>): RecyclerView.Adapter<NewsRecyclerAdapter.NewsViewHolder>() {
 
     class NewsViewHolder(var view:CardViewBinding): RecyclerView.ViewHolder(view.root){
 
@@ -36,7 +38,7 @@ class NewsRecyclerAdapter(val newsList:ArrayList<Article>): RecyclerView.Adapter
 
         holder.view.news = newsList.get(position)
 
-        holder.view.listener = this
+        holder.view.listener = context
 
         /*holder.itemView.textViewTitle.text = newsList.get(position).title
         holder.itemView.textViewDesc.text = newsList.get(position).description
@@ -44,8 +46,6 @@ class NewsRecyclerAdapter(val newsList:ArrayList<Article>): RecyclerView.Adapter
         holder.itemView.textViewCalendar.text = newsList.get(position).publishedAt
 
         //Görsel eklenecek
-
-
 
         holder.itemView.imageViewNews.downloadImage(newsList.get(position).urlToImage,
             makePlaceHolder(holder.itemView.context))*/
@@ -57,12 +57,4 @@ class NewsRecyclerAdapter(val newsList:ArrayList<Article>): RecyclerView.Adapter
         notifyDataSetChanged()
     }
 
-    override fun onClickListener(vieww: View) {
-
-        val uuid = vieww.uuid_card.text.toString().toIntOrNull()
-        uuid?.let {
-            val action = HomeFragmentDirections.actionHomeFragmentToDetailFragment(it)
-            Navigation.findNavController(vieww).navigate(action)
-        }
-    }
 }

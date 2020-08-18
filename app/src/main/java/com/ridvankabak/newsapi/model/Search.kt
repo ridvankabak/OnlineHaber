@@ -5,10 +5,10 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class Search(
-    var title:String?="",
-    var content:String?="",
-    var language: String?="",
-    var to:String?="",
-    var from:String?="",
-    var toSort:String?=""
+    var title:String="",
+    var content:String="",
+    var language: String="",
+    var to:String="",
+    var from:String="",
+    var toSort:String=""
 ):Parcelable

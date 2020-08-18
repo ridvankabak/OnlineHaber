@@ -36,7 +36,9 @@ class LanguageBottomSheetDialog(var languageList:ArrayList<Language>,var callbac
     private fun setlistener() {
 
         listViewLanguage?.setOnItemClickListener { parent, view, position, id ->
-
+            languageList.forEach{
+                it.isSelected = false
+            }
             languageList.get(selectedIndex).isSelected = false
             languageList.get(position).isSelected = true
             selectedItem = languageList.get(position)

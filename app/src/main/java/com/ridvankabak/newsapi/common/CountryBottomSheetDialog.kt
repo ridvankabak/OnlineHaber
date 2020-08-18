@@ -14,7 +14,7 @@ import kotlinx.android.synthetic.main.bottom_sheet_ulke.*
 class CountryBottomSheetDialog(var countryList:ArrayList<Country>,var callback:HomeFragment) : BottomSheetDialogFragment() {
 
     var adapter: CountryAdapter? = null
-    var selectedIndex: Int = null ?: 0
+    var selectedIndex: Int = 0
     var selectedItem: Country? = null
 
     override fun onCreateView(
@@ -28,16 +28,28 @@ class CountryBottomSheetDialog(var countryList:ArrayList<Country>,var callback:H
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        countryList.get(selectedIndex).isSelected = true
+
+        initUi()
+        setListener()
+    }
+
+    private fun initUi() {
+        countryList.get(selectedIndex).isSelected = false
         adapter = CountryAdapter(countryList)
         listViewCountry.adapter = adapter
+    }
 
+    private fun setListener(){
         listViewCountry.setOnItemClickListener { parent, view, position, id ->
+            countryList.forEach {
+                it.isSelected = false
+            }
             countryList.get(selectedIndex).isSelected = false
             countryList.get(position).isSelected = true
             selectedItem = countryList.get(position)
             selectedIndex = position
             adapter?.notifyDataSetChanged()
+
         }
 
         buttonCountryClick.setOnClickListener{
