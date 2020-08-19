@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -26,11 +27,11 @@ import kotlinx.android.synthetic.main.fragment_home.*
 
 
 class HomeFragment : Fragment(), CountryBottomSheetDialog.BSheetCountryListener,
-    LanguageBottomSheetDialog.BSheetLanguageListener,NewsClickListener {
+    LanguageBottomSheetDialog.BSheetLanguageListener, NewsClickListener {
 
     private lateinit var viewModel: HomeViewModel
     private lateinit var mainViewModel: MainViewModel
-    private val recyclerNewsAdapter = NewsRecyclerAdapter(this,arrayListOf())
+    private val recyclerNewsAdapter = NewsRecyclerAdapter(this, arrayListOf())
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -49,6 +50,7 @@ class HomeFragment : Fragment(), CountryBottomSheetDialog.BSheetCountryListener,
         recyclerview_home.adapter = recyclerNewsAdapter
         setListener()
         observeLiveData()
+        
     }
 
     fun setListener() {
