@@ -1,6 +1,7 @@
 package com.ridvankabak.newsapi.viewmodel
 
 import android.app.Application
+import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import com.ridvankabak.newsapi.model.Article
@@ -18,7 +19,7 @@ import kotlinx.coroutines.launch
 
 class HomeViewModel(application: Application) : BaseViewModel(application) {
     val result = MutableLiveData<ResultService>()
-    private var uptadeTime = 0.2 * 60 * 1000 * 1000 * 1000L
+    private var uptadeTime = 5 * 60 * 1000 * 1000 * 1000L
 
     private val newsApiService = NewsApiService()
     private val disposable = CompositeDisposable()

@@ -16,20 +16,62 @@
         android:layout_height="match_parent"
         tools:context=".view.DetailFragment">
 
-        <TextView
-            android:id="@+id/textViewDetailRootName"
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appbardetail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/alegreya_sans_bold"
-            android:letterSpacing="0.03"
-            android:text="@string/detail_fragment"
-            android:textAlignment="center"
-            android:textColor="#3a84db"
-            android:textSize="22sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <androidx.appcompat.widget.Toolbar
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/white">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:weightSum="10"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/imExit"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_weight="2"
+                        android:src="@drawable/ic_exit"
+                        android:layout_gravity="center"/>
+
+                    <TextView
+                        android:id="@+id/textViewDetailRootName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="6"
+                        android:fontFamily="@font/alegreya_sans_bold"
+                        android:letterSpacing="0.03"
+                        android:text="@string/detail_fragment"
+                        android:textAlignment="center"
+                        android:textColor="#3a84db"
+                        android:textSize="22sp"
+                        android:textStyle="bold"
+                        />
+                    <ImageView
+                        android:id="@+id/imSaves"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_weight="2"
+                        android:src="@drawable/ic_saves_off"
+                        android:layout_gravity="bottom"/>
+
+
+                </LinearLayout>
+            </androidx.appcompat.widget.Toolbar>
+
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+
 
         <im.delight.android.webview.AdvancedWebView
             android:id="@+id/webView"
@@ -38,7 +80,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textViewDetailRootName"
+            app:layout_constraintTop_toBottomOf="@+id/appbardetail"
             android:loadUrl="@{news.url}"
             />
 

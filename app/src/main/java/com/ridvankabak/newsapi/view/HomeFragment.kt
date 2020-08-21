@@ -5,7 +5,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.LinearLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -98,39 +97,14 @@ class HomeFragment : Fragment(), CountryBottomSheetDialog.BSheetCountryListener,
             dialog.show(parentFragmentManager, "ulkeBottomSheet")
         }
 
+        floatingActionButton.setOnClickListener {
+            val action = HomeFragmentDirections.actionHomeFragmentToSaveFragment()
+            Navigation.findNavController(it).navigate(action)
+        }
+
     }
 
     fun observeLiveData() {
-        /*viewModel.news.observe(viewLifecycleOwner, Observer { news ->
-            news?.let {
-                recyclerview_home.visibility = View.VISIBLE
-                recyclerNewsAdapter.newsListUptade(it)
-            }
-
-        })
-
-        viewModel.newsErrorMessage.observe(viewLifecycleOwner, Observer { error ->
-            error?.let {
-                if (it) {
-                    recyclerview_home.visibility = View.GONE
-                    linearlayoutNoNews.visibility = View.VISIBLE
-                } else {
-                    linearlayoutNoNews.visibility = View.GONE
-                }
-            }
-        })
-
-        viewModel.newsLoading.observe(viewLifecycleOwner, Observer { loading ->
-            loading?.let {
-                if (it) {
-                    recyclerview_home.visibility = View.GONE
-                    linearlayoutNoNews.visibility = View.GONE
-                    pb_loading.visibility = View.VISIBLE
-                } else {
-                    pb_loading.visibility = View.GONE
-                }
-            }
-        })*/
 
         viewModel.result.observe(viewLifecycleOwner, Observer { result ->
 
