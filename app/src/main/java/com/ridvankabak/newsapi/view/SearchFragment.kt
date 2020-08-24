@@ -20,6 +20,7 @@ import com.ridvankabak.newsapi.R
 import com.ridvankabak.newsapi.adapter.ExpandableListAdapter
 import com.ridvankabak.newsapi.adapter.LanguageAdapterSearch
 import com.ridvankabak.newsapi.databinding.FragmentSearchBinding
+import com.ridvankabak.newsapi.model.ExpandableSearch
 import com.ridvankabak.newsapi.model.Search
 import com.ridvankabak.newsapi.viewmodel.HomeViewModel
 import com.ridvankabak.newsapi.viewmodel.MainViewModel
@@ -27,15 +28,17 @@ import com.ridvankabak.newsapi.viewmodel.SearchViewModel
 import kotlinx.android.synthetic.main.fragment_search.*
 import java.util.*
 
-class SearchFragment : Fragment(),LanguageAdapterSearch.FlagClickListener {
+class SearchFragment : Fragment(), LanguageAdapterSearch.FlagClickListener,ExpandableListAdapter.ExpandableClickListener {
     private lateinit var viewModel: SearchViewModel
-    private val expandableAdapter =
-        context?.let { ExpandableListAdapter(arrayListOf(), hashMapOf()) }
-    private val recyclerAdapterLanguage = LanguageAdapterSearch(arrayListOf(),this)
+    private val recyclerAdapterLanguage = LanguageAdapterSearch(arrayListOf(), this)
 
     private lateinit var mainViewModel: MainViewModel
 
     private var search = Search()
+    var expandableAdapter = ExpandableListAdapter(
+        ExpandableSearch.SupplierExpandable.header,
+        ExpandableSearch.SupplierExpandable.hashExpandable, this
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,16 +71,9 @@ class SearchFragment : Fragment(),LanguageAdapterSearch.FlagClickListener {
     }
 
     private fun observerLiveData() {
-        viewModel.header.observe(viewLifecycleOwner, Observer { header ->
-            expandableAdapter?.addHeaderList(header)
-        })
-
-        viewModel.hashValue.observe(viewLifecycleOwner, Observer {
-            expandableAdapter?.addHashMap(it)
-        })
 
         viewModel.flags.observe(viewLifecycleOwner, Observer {
-            recyclerAdapterLanguage?.flagListUptade(it)
+            recyclerAdapterLanguage.flagListUptade(it)
         })
 
         viewModel.globalDateFrom.observe(viewLifecycleOwner, Observer {
@@ -94,7 +90,7 @@ class SearchFragment : Fragment(),LanguageAdapterSearch.FlagClickListener {
 
     private fun setListener() {
         buttonSearch?.setOnClickListener { view ->
-            if(getData()){
+            if (getData()) {
                 val action = SearchFragmentDirections.actionSearchFragmentToHomeFragment()
                 Navigation.findNavController(view).navigate(action)
             }
@@ -106,6 +102,16 @@ class SearchFragment : Fragment(),LanguageAdapterSearch.FlagClickListener {
 
         expandableListView.setOnGroupCollapseListener {
             expandableListView.layoutParams.height = 100
+        }
+
+        expandableListView?.setOnChildClickListener { parent, v, groupPosition, childPosition, id ->
+
+            viewModel.onClickChild(groupPosition,childPosition)
+            expandableAdapter.notifyDataSetChanged()
+            search.toSort=viewModel.switch(
+                ExpandableSearch.SupplierExpandable.hashExpandable.get(
+                    ExpandableSearch.SupplierExpandable.header.get(groupPosition))?.get(childPosition)!!.title)
+            false
         }
 
         editTextDateTo?.setOnClickListener {
@@ -134,14 +140,18 @@ class SearchFragment : Fragment(),LanguageAdapterSearch.FlagClickListener {
         }
     }
 
-    private fun getData():Boolean {
+    private fun getData(): Boolean {
         //val search = Search("title","content","tr","12-12-2020","21-2-2020","sort")
         search.title = editTextTitleSearch.text.toString()
         search.content = editTextContentSearch.text.toString()
-        if(search.content.isNullOrEmpty()){
-            Toast.makeText(context,"Araman yapmak için istenilen alan doldurulmalı",Toast.LENGTH_LONG).show()
+        if (search.content.isNullOrEmpty()) {
+            Toast.makeText(
+                context,
+                "Araman yapmak için içeriğe ilgili anahtar kelime girilmeli",
+                Toast.LENGTH_LONG
+            ).show()
             return false
-        }else{
+        } else {
             mainViewModel.updateSearchValue(search)
             return true
         }
@@ -149,5 +159,9 @@ class SearchFragment : Fragment(),LanguageAdapterSearch.FlagClickListener {
 
     override fun onClickListener(title: String, position: Int?) {
         search.language = title
+    }
+
+    override fun onClickExpandableList(toSort: String) {
+        //Log.e("toSortasd",toSort)
     }
 }

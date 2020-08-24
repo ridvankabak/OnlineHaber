@@ -18,12 +18,8 @@ class SaveViewModel(application: Application):BaseViewModel(application) {
         launch {
             result.value = ResultRoom.GetNewsLoading(true)
             val dao = NewsDatabase(getApplication()).newsDao()
-            val newsList = dao.getAllSaveNews()
-            for (i in 0..(newsList.size-1)){
-                Log.e("uuidASD",newsList[i].uuid.toString())
-                Log.e("isSavedASD",newsList[i].isSaved.toString())
-                Log.e("urlASD",newsList[i].url.toString())
-            }
+            val newsList = dao.getAllSaveNews(1)
+
             showData(newsList)
 
         }

@@ -21,6 +21,9 @@ class SearchViewModel :ViewModel(){
     var globalDateTo = MutableLiveData<String>()
     var globalDateFrom = MutableLiveData<String>()
 
+    var selectedIndex: Int = 0
+    var selectedItem: ExpandableSearch? = null
+
     fun getData(){
         header.value = ExpandableSearch.SupplierExpandable.header
         hashValue.value = ExpandableSearch.SupplierExpandable.hashExpandable
@@ -51,5 +54,23 @@ class SearchViewModel :ViewModel(){
         val sdf = SimpleDateFormat(myFormat)
         val date = sdf.format(myCalendar.time)
         return date
+    }
+
+    fun onClickChild(groupPosition:Int,childPosition:Int) {
+        ExpandableSearch.SupplierExpandable.hashExpandable?.get(ExpandableSearch.SupplierExpandable.header?.get(groupPosition))?.get(selectedIndex)!!.isSelected =
+            false
+        ExpandableSearch.SupplierExpandable.hashExpandable?.get(ExpandableSearch.SupplierExpandable.header?.get(groupPosition))?.get(childPosition)!!.isSelected =
+            true
+        selectedItem = ExpandableSearch.SupplierExpandable.hashExpandable!!.get(ExpandableSearch.SupplierExpandable.header?.get(groupPosition))?.get(childPosition)
+        selectedIndex = childPosition
+    }
+
+    fun switch(title: String):String {
+        when(title){
+            "Yeni Haberler" ->  return "publishedAt"
+            "Manşetler" -> return "relevancy"
+            "En Çok Okunan" -> return "populerity"
+        }
+        return ""
     }
 }

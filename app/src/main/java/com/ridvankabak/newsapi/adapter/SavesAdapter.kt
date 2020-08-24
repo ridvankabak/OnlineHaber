@@ -38,10 +38,10 @@ class SavesAdapter(var news:ArrayList<News>): RecyclerView.Adapter<SavesAdapter.
         holder.itemView.tvSavesTitle.text = title
 
         holder.itemView.cardViewSaves.setOnClickListener {view->
-            val uuid = news[position].uuid
-            uuid.let {
-                Log.e("uuid",uuid.toString())
-                val action = SaveFragmentDirections.actionSaveFragmentToDetailFragment(uuid)
+            val url = news[position].url
+            url?.let {
+                Log.e("url",url.toString())
+                val action = SaveFragmentDirections.actionSaveFragmentToDetailFragment(url)
                 Navigation.findNavController(view).navigate(action)
             }
         }

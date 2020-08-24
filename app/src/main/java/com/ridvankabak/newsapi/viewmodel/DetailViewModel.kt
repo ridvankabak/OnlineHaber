@@ -3,61 +3,58 @@ package com.ridvankabak.newsapi.viewmodel
 import android.app.Application
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
-import com.ridvankabak.newsapi.model.Article
 import com.ridvankabak.newsapi.model.News
 import com.ridvankabak.newsapi.service.NewsDatabase
 import kotlinx.coroutines.launch
 
 class DetailViewModel(application: Application) : BaseViewModel(application) {
-    val newsLiveData = MutableLiveData<Article>()
-    val newsSaveLiveData = MutableLiveData<News>()
+    val newsLiveData = MutableLiveData<String>()
+    val isSaved = MutableLiveData<Boolean>()
+    val saveNews = MutableLiveData<News>()
+
     private val dao = NewsDatabase(getApplication()).newsDao()
-    var news: News? = null
+    var newsSave: News? = null
 
-    fun roomGetData(uuid: Int) {
+
+    fun roomGetData(url: String) {
         launch {
-            val new = dao.getNews(uuid)
-            if (new != null) {
-                newsLiveData.value = new
-
-                news = News(
-                    new.author,
-                    new.title,
-                    new.description,
-                    new.url,
-                    new.urlToImage,
-                    new.publishedAt,
-                    new.content
+            newsLiveData.value = url
+            saveNews.value = dao.getSaveNews(url)
+            if (saveNews.value == null) {
+                Log.e("saveNews", "null")
+                val news = dao.getNews(url)
+                newsSave = News(
+                    news?.author,
+                    news?.title,
+                    news?.description,
+                    news?.url,
+                    news?.urlToImage,
+                    news?.publishedAt,
+                    news?.content
                 )
-                Log.e("HomeFragmentten","Geldi")
-                Log.e("articleUuid",uuid.toString())
+                isSaved.value = false
             } else {
-                val getNewsSave = dao.getSaveNews(uuid)
-                newsSaveLiveData.value = getNewsSave
-                Log.e("SaveFragmentten","Geldi")
-                Log.e("newsUuid",uuid.toString())
-
+                Log.e("saveNews", "Haber var -> " + saveNews.value!!.title.toString())
+                isSaved.value = true
             }
+
         }
     }
 
     fun saveData() {
         launch {
-            news?.let {
+            newsSave?.let {
                 dao.insertSaveNews(it)
-                Log.e("isSaved", "Kaydedildi")
+                Log.e("ASD isSaved", "Kaydedildi")
             }
         }
     }
 
     fun deleteData() {
         launch {
-            news?.uuid.let {
-                if (it != null) {
-                    dao.deleteSaveNews(it)
-                    Log.e("isSaved", "Çıkarıldı")
-                }
-            }
+            dao.deleteSaveNews(saveNews.value?.url!!)
+                Log.e("ASD isSaved", "Çıkarıldı")
+
 
         }
     }
@@ -65,13 +62,10 @@ class DetailViewModel(application: Application) : BaseViewModel(application) {
     fun updateData(isSaved: Int) {
         launch {
             when (isSaved) {
-                0 -> news?.let {
-                    dao.updateSaved(0, it.uuid)
-                    Log.e("isSaved", "False")
-                }
-                1 -> news?.let {
-                    dao.updateSaved(1, it.uuid)
-                    Log.e("isSaved", "True")
+
+                1 -> newsSave?.let {
+                    it.url?.let { it1 -> dao.updateSaved(1, it1) }
+                    Log.e("ASD isSaved", "True")
                 }
 
 
@@ -80,3 +74,4 @@ class DetailViewModel(application: Application) : BaseViewModel(application) {
 
     }
 }
+

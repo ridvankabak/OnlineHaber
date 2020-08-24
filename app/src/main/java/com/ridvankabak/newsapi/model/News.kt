@@ -28,7 +28,7 @@ class News(
     val content: String?
 ) {
     @PrimaryKey(autoGenerate = true)
-    var uuid: Int = 100
+    var uuid: Int = 0
 
     @ColumnInfo(name = "isSaved")
     var isSaved: Boolean = false

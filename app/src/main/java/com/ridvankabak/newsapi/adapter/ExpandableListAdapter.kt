@@ -9,8 +9,9 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.ridvankabak.newsapi.R
 import com.ridvankabak.newsapi.model.ExpandableSearch
+import com.ridvankabak.newsapi.view.SearchFragment
 
-class ExpandableListAdapter(var listDataHeader: ArrayList<String>,var listHashMap: HashMap<String, ArrayList<ExpandableSearch>>):BaseExpandableListAdapter() {
+class ExpandableListAdapter(var listDataHeader: ArrayList<String>,var listHashMap: HashMap<String, ArrayList<ExpandableSearch>>,val callback:SearchFragment):BaseExpandableListAdapter() {
 
     override fun getGroup(groupPosition: Int): Any {
         return listDataHeader.get(groupPosition)
@@ -84,7 +85,7 @@ class ExpandableListAdapter(var listDataHeader: ArrayList<String>,var listHashMa
             imageView?.visibility = View.GONE
         }
 
-        //callback.onClickList(childText.title)
+        //callback.onClickExpandableList(childText.title)
 
         return convertView
     }
@@ -97,15 +98,7 @@ class ExpandableListAdapter(var listDataHeader: ArrayList<String>,var listHashMa
         return listDataHeader.size
     }
 
-    fun addHeaderList(newListDataHeader:ArrayList<String>){
-        listDataHeader.clear()
-        listDataHeader.addAll(newListDataHeader)
-        notifyDataSetChanged()
-    }
-
-    fun addHashMap(newListHaspMap:HashMap<String, ArrayList<ExpandableSearch>>){
-        listHashMap.clear()
-        listHashMap.putAll(newListHaspMap)
-        notifyDataSetChanged()
+    interface ExpandableClickListener{
+        fun onClickExpandableList(toSort:String)
     }
 }

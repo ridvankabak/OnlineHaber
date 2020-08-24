@@ -1,6 +1,7 @@
 package com.ridvankabak.newsapi.view
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -26,6 +27,7 @@ class SaveFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
+        Log.e("onCreateView","Çalıştı")
         return inflater.inflate(R.layout.fragment_save, container, false)
     }
 
@@ -39,9 +41,10 @@ class SaveFragment : Fragment() {
         rvSaves.layoutManager = manager
         adapter = SavesAdapter(arrayListOf())
         rvSaves.adapter = adapter
-
         observeLiveData()
         setListener()
+
+        Log.e("onViewCreated","Çalıştı")
     }
 
     private fun observeLiveData() {
@@ -75,7 +78,6 @@ class SaveFragment : Fragment() {
     private fun setListener(){
         imSavesExit.setOnClickListener {
             val count: Int = requireActivity().supportFragmentManager.backStackEntryCount
-
             if(count == 0){
                 super.requireActivity().onBackPressed()
             }else{
@@ -86,6 +88,6 @@ class SaveFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        adapter.notifyDataSetChanged()
+        Log.e("onResume","Çalıştı")
     }
 }

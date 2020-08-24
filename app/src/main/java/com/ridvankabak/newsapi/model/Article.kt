@@ -22,7 +22,7 @@ data class Article(
 
     @ColumnInfo(name = "url")
     @SerializedName("url")
-    val url: String?,
+    var url: String?,
 
     @ColumnInfo(name = "urlToImage")
     @SerializedName("urlToImage")
@@ -39,7 +39,4 @@ data class Article(
 ) {
         @PrimaryKey(autoGenerate = true)
         var uuid: Int = 0
-
-        @ColumnInfo(name = "isSaved")
-        var isSaved:Boolean = false
 }

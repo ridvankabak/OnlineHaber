@@ -7,8 +7,8 @@
 
     <data>
         <variable
-            name="news"
-            type="com.ridvankabak.newsapi.model.Article" />
+            name="viewmodel"
+            type="com.ridvankabak.newsapi.viewmodel.DetailViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -81,7 +81,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/appbardetail"
-            android:loadUrl="@{news.url}"
+            android:loadUrl="@{viewmodel.newsLiveData}"
             />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

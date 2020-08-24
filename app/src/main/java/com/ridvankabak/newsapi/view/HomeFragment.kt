@@ -153,7 +153,7 @@ class HomeFragment : Fragment(), CountryBottomSheetDialog.BSheetCountryListener,
     }
 
     override fun onClickListener(view: View) {
-        val uuid = view.uuid_card.text.toString().toIntOrNull()
+        val uuid = view.url_card.text.toString()
         uuid?.let {
             val action = HomeFragmentDirections.actionHomeFragmentToDetailFragment(it)
             Navigation.findNavController(view).navigate(action)

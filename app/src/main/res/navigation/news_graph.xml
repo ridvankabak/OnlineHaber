@@ -26,9 +26,8 @@
         android:label="fragment_detail"
         tools:layout="@layout/fragment_detail" >
         <argument
-            android:name="uuid"
-            app:argType="integer"
-            android:defaultValue="0" />
+            android:name="url"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
